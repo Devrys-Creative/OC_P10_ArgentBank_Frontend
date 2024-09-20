@@ -1,6 +1,10 @@
 import "./appBar.scss";
 
-export const AppBar = () => {
+interface appBarInterface {
+    logged?: boolean,
+};
+
+export const AppBar:React.FC<appBarInterface> = ({logged=false}) => {
 
     return (
         <nav className="main-nav">
@@ -12,11 +16,25 @@ export const AppBar = () => {
             />
             <h1 className="sr-only">Argent Bank</h1>
         </a>
-        <div>
-            <a className="main-nav-item" href="/sign-in">
-            <i className="fa fa-user-circle"></i> Sign In
-            </a>
-        </div>
+        
+        { !logged ? (
+            <div>
+                <a className="main-nav-item" href="/sign-in">
+                <i className="fa fa-user-circle"></i> Sign In
+                </a>
+            </div>
+        ) : (
+            <div>
+              <a className="main-nav-item" href="/user-panel">
+                <i className="fa fa-user-circle"></i>
+                Tony
+              </a>
+              <a className="main-nav-item" href="/">
+                <i className="fa fa-sign-out"></i>
+                Sign Out
+              </a>
+            </div>
+        )}
         </nav>
     );
 

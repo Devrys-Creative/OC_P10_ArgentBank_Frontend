@@ -1,8 +1,10 @@
+@use "../../common-style.scss";
+
 
 .features-list {
     display: flex;
     flex-direction: column;
-    @media screen and (min-width: 920px) {
+    @media screen and (min-width: common-style.$breakpoint-tablet) {
         flex-direction: row;
     }
   }
