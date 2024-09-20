@@ -1,0 +1,18 @@
+@use "../../common-style.scss";
+
+.feature-item {
+    flex: 1;
+    padding: 2.5rem;
+    &__title {
+        color: common-style.$color-dark-grey;
+        font-size: 1.25rem;
+        font-weight: bold;
+        margin-bottom: 0.5rem;
+    }
+    &__icon {
+        width: 100px;
+        border: 10px solid common-style.$color-green;
+        border-radius: 50%;
+        padding: 1rem;
+    }
+}
