@@ -1,10 +1,19 @@
+import { useEffect } from "react";
 import { Account } from "../../components/account/Account";
 import { AppBar } from "../../components/appBar/AppBar";
 import { Footer } from "../../components/footer/Footer";
 
 import "./userPanel.scss";
 
-export const UserPanel = () => {
+interface userPanelInterface {
+    pTitle:React.Dispatch<React.SetStateAction<string>>
+}
+
+export const UserPanel:React.FC<userPanelInterface> = ({pTitle}) => {
+
+    useEffect(() => {
+        pTitle("Your Panel");
+    },[]);
 
     return(
         <>

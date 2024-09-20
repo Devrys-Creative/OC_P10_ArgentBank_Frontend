@@ -1,9 +1,19 @@
+import { useEffect } from "react";
 import { AppBar } from "../../components/appBar/AppBar";
 import { Footer } from "../../components/footer/Footer";
 
 import "./signIn.scss";
 
-export const SignIn = () => {
+interface signInInterface {
+    pTitle:React.Dispatch<React.SetStateAction<string>>,
+}
+
+export const SignIn:React.FC<signInInterface> = ({pTitle}) => {
+
+
+    useEffect(() => {
+        pTitle("Sign In");
+    },[]);
 
     return (
         <>
