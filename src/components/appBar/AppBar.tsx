@@ -13,9 +13,8 @@ export const AppBar = () => {
             <h1 className="sr-only">Argent Bank</h1>
         </a>
         <div>
-            <a className="main-nav-item" href="./sign-in.html">
-            <i className="fa fa-user-circle"></i>
-            Sign In
+            <a className="main-nav-item" href="/sign-in">
+            <i className="fa fa-user-circle"></i> Sign In
             </a>
         </div>
         </nav>
