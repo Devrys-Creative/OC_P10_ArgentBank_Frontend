@@ -1,8 +1,7 @@
 import { useEffect } from "react";
-import { AppBar } from "../../components/appBar/AppBar";
-import { Footer } from "../../components/footer/Footer";
 
 import "./error404.scss";
+import { Link } from "react-router-dom";
 
 interface error404Interface {
     pTitle: React.Dispatch<React.SetStateAction<string>>,
@@ -15,13 +14,9 @@ export const Error404:React.FC<error404Interface> = ({pTitle}) => {
     });
 
     return (
-        <>
-        <AppBar />
         <main className="main bg-dark error404">
             <h2 className="error404__title">404 - undefined path</h2>
-            <a className="error404__link" href="/">Back to homepage</a>
+            <Link className="error404__link" to="/">Back to homepage</Link>
         </main>
-        <Footer />
-        </>
     );
 };

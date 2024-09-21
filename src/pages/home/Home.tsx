@@ -1,7 +1,5 @@
 import { useEffect } from "react";
-import { AppBar } from "../../components/appBar/AppBar";
 import { FeaturesList } from "../../components/featuresList/FeaturesList";
-import { Footer } from "../../components/footer/Footer";
 import { HeroHeader } from "../../components/heroHeader/HeroHeader";
 
 interface homeInterface {
@@ -14,13 +12,9 @@ export const Home:React.FC<homeInterface> = ({pTitle}) => {
     },[]);
 
     return (
-        <>
-        <AppBar />
-        <main>
+        <main className="main">
             <HeroHeader />
             <FeaturesList />
         </main>
-        <Footer />
-        </>
     );
 };
