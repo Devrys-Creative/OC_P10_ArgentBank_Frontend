@@ -1,0 +1,12 @@
+@use "../../common-style.scss";
+
+.notification {
+    margin: 10px;
+    padding: 10px;
+    text-align: center;
+    border: 2px solid common-style.$color-dark-grey;
+    &--error {
+        border-color: red;
+        color: red;
+    }
+}
