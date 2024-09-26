@@ -1,11 +1,7 @@
 @use "../../common-style.scss";
  
   .edit-button {
-    border-color: common-style.$color-green;
-    background-color: common-style.$color-green;
-    color: #fff;
-    font-weight: bold;
-    padding: 10px;
+    
   }
   
   .header {
@@ -13,3 +9,15 @@
     margin-bottom: 2rem;
   }
   
+  .edit-profile {
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    gap: 10px;
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 10px;
+    &__buttons {
+      grid-column: 1/span 2;
+      justify-self: center;
+    }
+  }

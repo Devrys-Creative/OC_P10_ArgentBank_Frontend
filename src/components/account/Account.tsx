@@ -16,7 +16,7 @@ export const Account:React.FC<accountInterface> = ({title,amount,amountDescripti
                 <p className="account__amount-description">{amountDescription}</p>
             </div>
             <div className="account-content-wrapper cta">
-                <button className="account__transaction-button">View transactions</button>
+                <button className="button account__transaction-button">View transactions</button>
             </div>
         </section>
     );

@@ -3,6 +3,7 @@ import { RootState } from "./store";
 import { ThunkAction } from "redux-thunk";
 import { userSlice } from "./userSlice";
 import { authSlice } from "./authSlice";
+import { fetchStatusSlice } from "./fetchStatusSlice";
 
 interface loginFormInterface {
     email: string | null,
@@ -33,7 +34,7 @@ export const userLogInThunk = (payload:loginFormInterface):ThunkAction<void, Roo
         .then((data) => {
             dispatch(userSlice.actions.setUser({token: data.body.token}));
             dispatch(getUserProfileThunk(data.body.token));
-            localStorage.setItem("token",data.body.token);
+            if(payload.rememberMe) { localStorage.setItem("token",data.body.token); }
         })
         .catch((errorMessage) => {
             // console.log("catch + dispatch error",typeof(errorMessage));
@@ -64,9 +65,41 @@ export const getUserProfileThunk = (token:string):ThunkAction<void, RootState, u
     };
 };
 
-export const updateUserNameThunk = (newUserName:string):ThunkAction<void, RootState, unknown, UnknownAction> => {
+interface editProfileInterface {
+    idFetchStatus: string,
+    userName: string,
+    token: string,
+}
+
+export const updateUserNameThunk = (payload:editProfileInterface):ThunkAction<void, RootState, unknown, UnknownAction> => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     return async (dispatch, getState) => {
-        console.log("change userName from ", getState().user.userName," to ", newUserName);
-        //fetch
+        // loading start
+        dispatch(fetchStatusSlice.actions.setLoading({id:payload.idFetchStatus}));
+        // console.log("change userName from ", getState().user.userName," to ", newUserName);
+        fetch('http://localhost:3001/api/v1/user/profile',{
+            method: 'PUT',
+            headers: {
+                "Content-type": "application/json",
+                Authorization: `Bearer ${payload.token}`,
+            },
+            body: JSON.stringify({userName:payload.userName}),
+        })
+        .then((response) => {
+            if(response.status===200) {
+                dispatch(userSlice.actions.setUser({userName: payload.userName}));
+                // success
+                dispatch(fetchStatusSlice.actions.setSuccess({id:payload.idFetchStatus}));
+            } else {
+                return response.json().then((errorResponse) => {
+                    throw new Error(errorResponse.message);
+                });
+            }
+        })
+        .catch((errorMessage) => {
+            // console.log("catch + dispatch error",errorMessage);
+            // loading start
+            dispatch(fetchStatusSlice.actions.setError({id:payload.idFetchStatus, errorMessage:errorMessage.message}));
+        });
     }
 }

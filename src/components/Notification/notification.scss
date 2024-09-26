@@ -9,4 +9,8 @@
         border-color: red;
         color: red;
     }
+    &--success {
+        border-color: common-style.$color-green;
+        color: common-style.$color-green;
+    }
 }

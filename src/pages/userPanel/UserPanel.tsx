@@ -2,10 +2,10 @@ import { useEffect, useState } from "react";
 import { Account } from "../../components/account/Account";
 
 import "./userPanel.scss";
-import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { getUser, isLoggedIn } from "../../redux/userSlice";
 import { Navigate } from "react-router-dom";
-import { updateUserNameThunk } from "../../redux/userThunks";
+import { EditUserName } from "../../components/editUserName/EditUserName";
+import { useAppSelector } from "../../redux/hooks";
 
 interface userPanelInterface {
     pTitle:React.Dispatch<React.SetStateAction<string>>
@@ -19,40 +19,21 @@ export const UserPanel:React.FC<userPanelInterface> = ({pTitle}) => {
     const [ editMode, setEditMode ] = useState(false);
     const toggleEditMode = ()=>setEditMode(!editMode);
 
-    const dispatch = useAppDispatch();
-
     useEffect(() => {
         pTitle("Your Panel");
     },[]);
 
-    const handleCancelButton = (event:React.MouseEvent) => {
-        event.preventDefault();
-        toggleEditMode();
-    };
-
-    const handleFormSubmit = (event:React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-        dispatch(updateUserNameThunk((document.getElementById("userName") as HTMLInputElement).value));
-    }
 
 
     return isLogged ? (
             <main className="main bg-dark">
                 <div className="header">
                     { editMode ? (
-                        <>
-                        <h1>Edit user info</h1>
-                        <form onSubmit={handleFormSubmit}>
-                            <label htmlFor="userName">User name:</label> <input type="text" id="userName" defaultValue={user?.userName as string} />
-                            <label htmlFor="firsName">First name:</label> <input type="text" id="firstName" defaultValue={user?.firstName as string} readOnly />
-                            <label htmlFor="lastName">Last name:</label> <input type="text" id="lastName" defaultValue={user?.firstName as string} readOnly />
-                            <button className="edit-button">Save</button> <button className="edit-button" onClick={handleCancelButton}>Cancel</button>
-                        </form>
-                        </>
+                        <EditUserName toggleEditMode={toggleEditMode} />
                     ) : (
                         <>
-                        <h1>Welcome back<br />{user?.firstName} {user?.lastName}!</h1>
-                        <button className="edit-button" onClick={toggleEditMode}>Edit Name</button>
+                        <h2>Welcome back<br />{user?.firstName} {user?.lastName}!</h2>
+                        <button className="button edit-button" onClick={toggleEditMode}>Edit Name</button>
                         </>
                     )}
                 </div>

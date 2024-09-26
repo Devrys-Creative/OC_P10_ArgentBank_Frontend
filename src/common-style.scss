@@ -8,3 +8,22 @@ $color-dark-purple: #12002b;
 // Breakpoints
 $breakpoint-mobile: 720px;
 $breakpoint-tablet: 920px;
+
+// Common styles
+.button {
+    border-color: $color-green;
+    background-color: $color-green;
+    color: #fff;
+    font-size: 1.1rem;
+    font-weight: bold;
+    padding: 8px;
+}
+
+
+label {
+    font-weight: bold;
+}
+input {
+    padding: 5px;
+    font-size: 1.2rem;
+}

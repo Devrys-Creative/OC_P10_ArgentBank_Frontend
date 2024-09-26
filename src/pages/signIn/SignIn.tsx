@@ -57,7 +57,7 @@ export const SignIn:React.FC<signInInterface> = ({pTitle}) => {
                     <div className="input-remember">
                         <input type="checkbox" id="remember-me" name="remember-me" /><label htmlFor="remember-me">Remember me</label>
                     </div>
-                    <button className="sign-in-button">Sign In</button>
+                    <button className="button sign-in-button">Sign In</button>
                 </form>
             </section>
         </main>
