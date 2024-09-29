@@ -6,8 +6,8 @@
     text-align: center;
     border: 2px solid common-style.$color-dark-grey;
     &--error {
-        border-color: red;
-        color: red;
+        border-color: common-style.$color-red;
+        color: common-style.$color-red;
     }
     &--success {
         border-color: common-style.$color-green;

@@ -5,6 +5,7 @@ import { getUser, isLoggedIn, userSlice } from "../../redux/userSlice";
 import "./appBar.scss";
 import { useEffect } from "react";
 import { getUserProfileThunk } from "../../redux/userThunks";
+import { fetchStatusSlice, getFetchStatus } from "../../redux/fetchStatusSlice";
 
 
 export const AppBar = () => {
@@ -12,15 +13,31 @@ export const AppBar = () => {
     const isLogged:boolean = useAppSelector(isLoggedIn);
     const firstName = useAppSelector(getUser)?.firstName;
     const dispatch = useAppDispatch();
+    const fetchStatus = useAppSelector(getFetchStatus("relogIn"));
 
     useEffect(() => {
         // User not connected but token stored => autoconnect
         const token = localStorage.getItem('token');
         if(!isLogged && token !== null) {
+            dispatch(fetchStatusSlice.actions.initStatus("relogIn"));
             dispatch(userSlice.actions.setUser({token: token}));
-            dispatch(getUserProfileThunk(token));
+            dispatch(getUserProfileThunk({
+                idFetchStatus: "relogIn",
+                token: token, 
+            }));
         }
     },[isLogged])
+
+    useEffect(() => {
+        if(fetchStatus?.error) {
+            localStorage.removeItem('token');
+            dispatch(userSlice.actions.clearUser());
+        }
+        // reloging end with success or error
+        if(fetchStatus?.error || fetchStatus?.success) {
+            dispatch(fetchStatusSlice.actions.clearStatus("relogIn"));
+        }
+    }, [fetchStatus]);
 
     const handleDisconnect = () => {
         dispatch(userSlice.actions.clearUser());

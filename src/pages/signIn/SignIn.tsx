@@ -7,7 +7,7 @@ import { userLogInThunk } from "../../redux/userThunks";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { isLoggedIn } from "../../redux/userSlice";
 import { Notification } from "../../components/Notification/Notification";
-import { authSlice, getAuthErrorMessage } from "../../redux/authSlice";
+import { fetchStatusSlice, getFetchStatus } from "../../redux/fetchStatusSlice";
 
 interface signInInterface {
     pTitle:React.Dispatch<React.SetStateAction<string>>,
@@ -17,13 +17,14 @@ export const SignIn:React.FC<signInInterface> = ({pTitle}) => {
 
     const dispatch = useAppDispatch();
     const loggedIn:boolean = useAppSelector(isLoggedIn);
-    const errorMessage:null|string = useAppSelector(getAuthErrorMessage);
+    const status = useAppSelector(getFetchStatus("logIn"));
 
     // first render
     useEffect(() => {
         // Setting up window title
         pTitle("Sign In");
-        return () => { dispatch(authSlice.actions.clear()) };
+        dispatch(fetchStatusSlice.actions.initStatus("logIn"));
+        return () => { dispatch(fetchStatusSlice.actions.clearStatus("logIn")); };
     },[]);
 
     const handleFormSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -31,6 +32,7 @@ export const SignIn:React.FC<signInInterface> = ({pTitle}) => {
         // checking form
         if(event.currentTarget.reportValidity()) {
             const payload = {
+                idFetchStatus: "logIn",
                 email: (document.getElementById('username') as HTMLInputElement)?.value,
                 password: (document.getElementById('password') as HTMLInputElement)?.value,
                 rememberMe: (document.getElementById('remember-me') as HTMLInputElement)?.checked,
@@ -47,7 +49,7 @@ export const SignIn:React.FC<signInInterface> = ({pTitle}) => {
                 <h1>Sign In</h1>
                 
                 <form onSubmit={handleFormSubmit}>
-                    { errorMessage && <Notification message={errorMessage} type="error" /> }
+                    { status?.error && <Notification message={status.errorMessage} type="error" /> }
                     <div className="input-wrapper">
                         <label htmlFor="username">Username</label><input type="email" id="username" name="username" required/>
                     </div>
