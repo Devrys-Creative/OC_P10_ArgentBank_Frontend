@@ -1,3 +1,6 @@
+
+// Component used to display account data
+
 import "./account.scss";
 
 interface accountInterface {

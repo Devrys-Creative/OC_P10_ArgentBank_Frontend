@@ -1,3 +1,6 @@
+// Slice used to manage asynchronous fetch responses
+// This slice is generic: it accomodates all future fetch status requirements
+
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "./store";
 
@@ -9,6 +12,8 @@ interface FetchStatus {
     success: boolean;
     loading: boolean;
 }
+
+// slice definition
 const createFetchStatus = (id:string):FetchStatus => {
     return {
         id: id,
@@ -19,45 +24,57 @@ const createFetchStatus = (id:string):FetchStatus => {
     }
 }
 const initialState:FetchStatus[] = [];
-
-// slice
 export const fetchStatusSlice = createSlice({
     name: "fetchStatus",
     initialState: initialState,
     reducers: {
+        // create a fetchStatus element with a specified ID
+        // don't duplicate elements if the ID already exists
         initStatus: (currentState, action:PayloadAction<string>) => {
-            //clear state if id already exists
             const currentFilteredState = currentState.filter((status) => status.id !== action.payload);
             const status = createFetchStatus(action.payload);
             return [...currentFilteredState,status];
         },
+        // delete the fetchStatus element with the specified ID
         clearStatus: (currentState, action:PayloadAction<string>) => {
             const currentFilteredState = currentState.filter((status) => status.id !== action.payload);
             return [...currentFilteredState];
         },
+        // set a fetchStatus (with a specified ID) to error
         setError: (currentState, action:PayloadAction<Partial<FetchStatus>>) => {
-            (currentState.find((status) => status.id === action.payload.id) as FetchStatus).error = true;
-            (currentState.find((status) => status.id === action.payload.id) as FetchStatus).success = false;
-            (currentState.find((status) => status.id === action.payload.id) as FetchStatus).loading = false;
-            (currentState.find((status) => status.id === action.payload.id) as FetchStatus).errorMessage = action.payload.errorMessage as string;
-            return currentState;
+            const currentFilteredState = currentState.filter((status) => status.id !== action.payload.id);
+            return [...currentFilteredState, {
+                id: action.payload.id,
+                error: true,
+                errorMessage: action.payload.errorMessage,
+                success: false,
+                loading: false,
+            } as FetchStatus];
         },
+        // set a fetchStatus (with a specified ID) to success
         setSuccess: (currentState, action:PayloadAction<Partial<FetchStatus>>) => {
-            (currentState.find((status) => status.id === action.payload.id) as FetchStatus).error = false;
-            (currentState.find((status) => status.id === action.payload.id) as FetchStatus).success = true;
-            (currentState.find((status) => status.id === action.payload.id) as FetchStatus).loading = false;
-            (currentState.find((status) => status.id === action.payload.id) as FetchStatus).errorMessage = "";
-            return currentState;
+            const currentFilteredState = currentState.filter((status) => status.id !== action.payload.id);
+            return [...currentFilteredState, {
+                id: action.payload.id,
+                error: false,
+                errorMessage: "",
+                success: true,
+                loading: false,
+            } as FetchStatus];
         },
+        // set a fetchStatus (with a specified ID) to loading
         setLoading: (currentState, action:PayloadAction<Partial<FetchStatus>>) => {
-            (currentState.find((status) => status.id === action.payload.id) as FetchStatus).error = false;
-            (currentState.find((status) => status.id === action.payload.id) as FetchStatus).success = false;
-            (currentState.find((status) => status.id === action.payload.id) as FetchStatus).loading = true;
-            (currentState.find((status) => status.id === action.payload.id) as FetchStatus).errorMessage = "";
-            return currentState;
+            const currentFilteredState = currentState.filter((status) => status.id !== action.payload.id);
+            return [...currentFilteredState, {
+                id: action.payload.id,
+                error: false,
+                errorMessage: "",
+                success: false,
+                loading: true,
+            } as FetchStatus];
         },
     },
 });
 
-// selectors
+// selectors : retrieve the fetchStatus element with a specified ID
 export const getFetchStatus = (id:string) => (state:RootState):FetchStatus|undefined => state.fetchStatus.find((fetchStatus) => fetchStatus.id === id);

@@ -1,3 +1,5 @@
+// Definitions of some hooks to work with React, Redux, and TypeScript
+
 import { useDispatch, useSelector, useStore } from "react-redux";
 import { AppDispatch, AppStore, RootState } from "./store";
 

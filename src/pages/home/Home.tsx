@@ -7,6 +7,7 @@ interface homeInterface {
 }
 export const Home:React.FC<homeInterface> = ({pTitle}) => {
 
+    // set up prop allowing app component to manage the page title
     useEffect(() => {
         pTitle("Home Page");
     },[]);

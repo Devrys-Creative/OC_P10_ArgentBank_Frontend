@@ -12,8 +12,8 @@ import { Footer } from './components/footer/Footer';
 
 export const App = () => {
 
+  // Setting up page title
   const [ pageTitle, setupPageTitle ] = useState("Argent Bank");
-
   useEffect(() => {
     document.title=`Argent Bank - ${pageTitle}`;
   },[pageTitle])

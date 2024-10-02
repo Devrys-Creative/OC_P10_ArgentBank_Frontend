@@ -1,26 +1,37 @@
 
+// AppBar component is used to :
+// - display the main logo
+// - manage the main menu links
+// - handle login if localStorage is configured for that
+
 import { Link } from "react-router-dom";
+import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { getUser, isLoggedIn, userSlice } from "../../redux/userSlice";
-import "./appBar.scss";
-import { useEffect } from "react";
 import { getUserProfileThunk } from "../../redux/userThunks";
 import { fetchStatusSlice, getFetchStatus } from "../../redux/fetchStatusSlice";
-
+import "./appBar.scss";
 
 export const AppBar = () => {
 
-    const isLogged:boolean = useAppSelector(isLoggedIn);
-    const firstName = useAppSelector(getUser)?.firstName;
+    // Redux hooks
     const dispatch = useAppDispatch();
+    // Retrieve user info from the Redux store
+    const isLogged = useAppSelector(isLoggedIn);
+    const firstName = useAppSelector(getUser)?.firstName;
+    // Retrieve the fetch status from the Redux store
     const fetchStatus = useAppSelector(getFetchStatus("relogIn"));
 
+    // Check the value of isLogged
     useEffect(() => {
-        // User not connected but token stored => autoconnect
+        // The user is not connected, but a token is stored, so automatically connect
         const token = localStorage.getItem('token');
         if(!isLogged && token !== null) {
+            // Use a Redux state to retrieve the status of an asynchronous fetch response
             dispatch(fetchStatusSlice.actions.initStatus("relogIn"));
+            // Use a Redux state to store the token in the user data
             dispatch(userSlice.actions.setUser({token: token}));
+            // dispatch thunk to log in the user
             dispatch(getUserProfileThunk({
                 idFetchStatus: "relogIn",
                 token: token, 
@@ -28,17 +39,20 @@ export const AppBar = () => {
         }
     },[isLogged])
 
+    // Check the value of fetchStatus
     useEffect(() => {
-        if(fetchStatus?.error) {
-            localStorage.removeItem('token');
-            dispatch(userSlice.actions.clearUser());
-        }
-        // reloging end with success or error
-        if(fetchStatus?.error || fetchStatus?.success) {
+        // Automatic connection ends with success or an error
+        if(fetchStatus !== undefined && (fetchStatus?.error || fetchStatus?.success)) {
+            if(fetchStatus?.error) {
+                // If there is an error : clean localStorage and the Redux store
+                localStorage.removeItem('token');
+                dispatch(userSlice.actions.clearUser());
+            }
             dispatch(fetchStatusSlice.actions.clearStatus("relogIn"));
         }
     }, [fetchStatus]);
 
+    // handle the logout button event
     const handleDisconnect = () => {
         dispatch(userSlice.actions.clearUser());
         localStorage.removeItem("token");

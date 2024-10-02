@@ -1,3 +1,5 @@
+// This component helps avoid code duplication in the home page
+
 import "./heroHeader.scss";
 
 export const HeroHeader = () => {

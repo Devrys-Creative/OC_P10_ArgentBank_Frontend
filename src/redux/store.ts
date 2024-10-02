@@ -1,6 +1,8 @@
+// Definition of the Redux store
+
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
-import { userSlice } from "./userSlice";
 import { thunk } from "redux-thunk";
+import { userSlice } from "./userSlice";
 import { fetchStatusSlice } from "./fetchStatusSlice";
 
 const initialState = {

@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 
 import "./signIn.scss";
-// import { userSlice } from "../../redux/userSlice";
 import { Navigate } from "react-router-dom";
 import { userLogInThunk } from "../../redux/userThunks";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
@@ -15,21 +14,26 @@ interface signInInterface {
 
 export const SignIn:React.FC<signInInterface> = ({pTitle}) => {
 
+    // Redux hooks
     const dispatch = useAppDispatch();
+    // Retrieve user info from the Redux store
     const loggedIn:boolean = useAppSelector(isLoggedIn);
+    // Retrieve the fetch status from the Redux store
     const status = useAppSelector(getFetchStatus("logIn"));
 
     // first render
     useEffect(() => {
-        // Setting up window title
+        // set up prop allowing app component to manage the page title
         pTitle("Sign In");
+        // Use a Redux state to retrieve the status of an asynchronous fetch response
         dispatch(fetchStatusSlice.actions.initStatus("logIn"));
         return () => { dispatch(fetchStatusSlice.actions.clearStatus("logIn")); };
     },[]);
 
+    // handle the login form submission
     const handleFormSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        // checking form
+        // checking the form before submission
         if(event.currentTarget.reportValidity()) {
             const payload = {
                 idFetchStatus: "logIn",
@@ -37,7 +41,7 @@ export const SignIn:React.FC<signInInterface> = ({pTitle}) => {
                 password: (document.getElementById('password') as HTMLInputElement)?.value,
                 rememberMe: (document.getElementById('remember-me') as HTMLInputElement)?.checked,
             }
-            // console.log(payload);
+            // dispatch thunk to log in the user
             dispatch(userLogInThunk(payload));
         }
     };

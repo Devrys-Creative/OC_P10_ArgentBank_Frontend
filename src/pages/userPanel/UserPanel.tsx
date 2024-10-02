@@ -13,17 +13,18 @@ interface userPanelInterface {
 
 export const UserPanel:React.FC<userPanelInterface> = ({pTitle}) => {
 
+    // Retrieve user info from the Redux store
     const isLogged:boolean = useAppSelector(isLoggedIn);
     const user = useAppSelector(getUser);
 
+    // editMode is a local state used to display or hide the form that allow the user to edit their username
     const [ editMode, setEditMode ] = useState(false);
     const toggleEditMode = ()=>setEditMode(!editMode);
 
+    // set up prop allowing app component to manage the page title
     useEffect(() => {
         pTitle("Your Panel");
     },[]);
-
-
 
     return isLogged ? (
             <main className="main bg-dark">

@@ -1,3 +1,5 @@
+// Slice used to manage the user data
+
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "./store";
 
@@ -11,9 +13,8 @@ export interface userInterface {
     token?: string | null,
 }
 
-const initialState:userInterface = {};
-
 // slice
+const initialState:userInterface = {};
 export const userSlice = createSlice({
     name: "user",
     initialState: initialState,
@@ -30,4 +31,3 @@ export const userSlice = createSlice({
 // selectors
 export const getUser = (state:RootState): userInterface | null => (state?.user);
 export const isLoggedIn = (state:RootState): boolean => (state?.user?.id ? true : false);
-// export const getToken = (state:RootState): string | null => (state?.user?.token);

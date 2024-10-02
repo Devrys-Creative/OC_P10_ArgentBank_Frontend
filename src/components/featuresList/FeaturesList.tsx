@@ -1,3 +1,5 @@
+// This component helps avoid code duplication in the home page
+
 import { FeatureItem } from "../featureItem/FeatureItem";
 import "./featuresList.scss";
 

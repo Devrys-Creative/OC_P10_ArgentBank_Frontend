@@ -1,3 +1,5 @@
+// This component helps avoid code duplication in the home page
+
 import "./featureItem.scss";
 
 
@@ -9,9 +11,6 @@ interface FeatureItemProps {
   }
 
 export const FeatureItem:React.FC<FeatureItemProps> = ({icon,iconAlt,title,content}) => {
-
-
-
     return (
         <div className="feature-item">
             <img src={`/icons/${icon}`} alt={iconAlt} className="feature-item__icon" />
